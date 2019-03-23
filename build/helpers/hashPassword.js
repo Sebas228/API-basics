@@ -11,18 +11,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const User_1 = __importDefault(require("../models/User"));
-class userController {
-    constructor() { }
-    getUser(req, res) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const users = yield User_1.default.find();
-            res.json(users);
-        });
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+exports.hashPassword = (password) => __awaiter(this, void 0, void 0, function* () {
+    try {
+        let salts = yield bcryptjs_1.default.genSalt(10);
+        let hash = yield bcryptjs_1.default.hash(password, salts);
+        return hash;
     }
-    getUsers(req, res) { }
-    createUser(req, res) { }
-    updateUser(req, res) { }
-    disableUser(req, res) { }
-}
-exports.default = userController;
+    catch (e) {
+        console.log(e);
+    }
+});

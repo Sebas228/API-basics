@@ -1,10 +1,10 @@
 import mongoose from "mongoose";
-import { mongodb } from "./keys";
+import { keys } from "./keys";
 
 mongoose.set("useFindAndModify", true);
 
 mongoose
-  .connect(mongodb.URI, {
+  .connect(keys.URI, {
     useNewUrlParser: true,
     useCreateIndex: true
   })

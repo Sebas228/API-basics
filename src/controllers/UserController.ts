@@ -47,18 +47,7 @@ class UserController {
    * @return Promise with Http Response
    */
   public static async createUser(req: Request, res: Response): Promise<void> {
-    const { firstName, lastName, password, email, image } = req.body;
-
-    const hash = await bcrypt.hash(password, 10);
-    const passHashed = hash;
-
-    const newUser = new User({
-      firstName,
-      lastName,
-      password: passHashed,
-      email,
-      image
-    });
+    const newUser = new User(req.body);
 
     try {
       const user = await newUser.save();
@@ -91,13 +80,9 @@ class UserController {
       });
     } else {
       try {
-        /* Encrypt password before send to DB */
-        if (req.body.password) {
-          const pass = bcrypt.hashSync(req.body.password, 10);
-          req.body.password = pass;
-        }
-
-        const userUpdated = await User.findByIdAndUpdate(id, req.body);
+        const userUpdated = await User.findOneAndUpdate({ _id: id }, req.body, {
+          new: true
+        });
 
         res.status(201).json({
           message: "The user has been updated",
@@ -124,7 +109,7 @@ class UserController {
     const { id } = req.params;
 
     try {
-      await User.findByIdAndDelete(id);
+      await User.findOneAndDelete({ _id: id });
       res.status(200).json({
         message: "The user has been deleted"
       });

@@ -4,15 +4,20 @@ import morgan from "morgan";
 import cors from "cors";
 import helmet from "helmet";
 
+//Configs
+import { keys } from "./config/keys";
+
+import authToken from "./middlewares/authToken";
+
 // Database
-import "./database";
+import "./config/database";
 
 // load Routes
 import userRoutes from "./routes/UserRoutes";
 import Auth from "./auth/Auth";
 
 class Server {
-  app: Application;
+  public app: Application;
 
   constructor() {
     this.app = express();
@@ -21,7 +26,7 @@ class Server {
   }
 
   config() {
-    this.app.set("port", process.env.PORT || 3000);
+    this.app.set("port", keys.Port);
 
     // Middlewares
     this.app.use(morgan("dev"));
@@ -30,6 +35,7 @@ class Server {
     this.app.use(compression());
     this.app.use(helmet());
     this.app.use("*", cors());
+    this.app.use(authToken);
   }
 
   routes() {
@@ -39,10 +45,10 @@ class Server {
 
   start() {
     this.app.listen(this.app.get("port"), () => {
-      console.log("server on port: ", this.app.get("port"));
+      console.log("Server on port: ", this.app.get("port"));
     });
   }
 }
 
-const server = new Server();
-server.start();
+const App = new Server();
+App.start();

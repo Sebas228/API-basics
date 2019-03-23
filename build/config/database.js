@@ -7,7 +7,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const keys_1 = require("./keys");
 mongoose_1.default.set("useFindAndModify", true);
 mongoose_1.default
-    .connect(keys_1.mongodb.URI, {
+    .connect(keys_1.keys.URI, {
     useNewUrlParser: true,
     useCreateIndex: true
 })

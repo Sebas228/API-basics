@@ -8,8 +8,11 @@ const compression_1 = __importDefault(require("compression"));
 const morgan_1 = __importDefault(require("morgan"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
+//Configs
+const keys_1 = require("./config/keys");
+const authToken_1 = __importDefault(require("./middlewares/authToken"));
 // Database
-require("./database");
+require("./config/database");
 // load Routes
 const UserRoutes_1 = __importDefault(require("./routes/UserRoutes"));
 const Auth_1 = __importDefault(require("./auth/Auth"));
@@ -20,7 +23,7 @@ class Server {
         this.routes();
     }
     config() {
-        this.app.set("port", process.env.PORT || 3000);
+        this.app.set("port", keys_1.keys.Port);
         // Middlewares
         this.app.use(morgan_1.default("dev"));
         this.app.use(express_1.default.json());
@@ -28,6 +31,7 @@ class Server {
         this.app.use(compression_1.default());
         this.app.use(helmet_1.default());
         this.app.use("*", cors_1.default());
+        this.app.use(authToken_1.default);
     }
     routes() {
         this.app.use("/api/users", UserRoutes_1.default);
@@ -35,9 +39,9 @@ class Server {
     }
     start() {
         this.app.listen(this.app.get("port"), () => {
-            console.log("server on port: ", this.app.get("port"));
+            console.log("Server on port: ", this.app.get("port"));
         });
     }
 }
-const server = new Server();
-server.start();
+const App = new Server();
+App.start();

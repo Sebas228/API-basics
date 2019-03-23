@@ -11,7 +11,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const User_1 = __importDefault(require("../models/User"));
 /* Class for manage all HTTP Request for Model user */
 class UserController {
@@ -59,16 +58,7 @@ class UserController {
      */
     static createUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const { firstName, lastName, password, email, image } = req.body;
-            const hash = yield bcryptjs_1.default.hash(password, 10);
-            const passHashed = hash;
-            const newUser = new User_1.default({
-                firstName,
-                lastName,
-                password: passHashed,
-                email,
-                image
-            });
+            const newUser = new User_1.default(req.body);
             try {
                 const user = yield newUser.save();
                 res.status(200).json(user);
@@ -101,12 +91,9 @@ class UserController {
             }
             else {
                 try {
-                    /* Encrypt password before send to DB */
-                    if (req.body.password) {
-                        const pass = bcryptjs_1.default.hashSync(req.body.password, 10);
-                        req.body.password = pass;
-                    }
-                    const userUpdated = yield User_1.default.findByIdAndUpdate(id, req.body);
+                    const userUpdated = yield User_1.default.findOneAndUpdate({ _id: id }, req.body, {
+                        new: true
+                    });
                     res.status(201).json({
                         message: "The user has been updated",
                         userUpdated
@@ -133,7 +120,7 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const { id } = req.params;
             try {
-                yield User_1.default.findByIdAndDelete(id);
+                yield User_1.default.findOneAndDelete({ _id: id });
                 res.status(200).json({
                     message: "The user has been deleted"
                 });
