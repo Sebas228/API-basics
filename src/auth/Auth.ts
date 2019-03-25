@@ -32,7 +32,8 @@ class Auth {
         if (!compare) {
           res.status(400).json({
             success: false,
-            message: "username or password incorrect"
+            message: "username or password incorrect",
+            token: null
           });
         } else {
           const payload = {
@@ -48,6 +49,7 @@ class Auth {
 
           res.status(200).json({
             success: true,
+            message: "Logged in",
             token
           });
         }
@@ -55,7 +57,11 @@ class Auth {
         res.status(500).json({ message: "internal error", e });
       }
     } else {
-      res.status(400).json({ message: "the user dosn't exists" });
+      res.status(400).json({
+        success: false,
+        message: "the user dosn't exists",
+        token: null
+      });
     }
   }
 }
