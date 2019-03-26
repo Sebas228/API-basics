@@ -1,8 +1,6 @@
 import { Schema, model } from "mongoose";
 import uniqueValidator from "mongoose-unique-validator";
 
-import bcrypt from "bcryptjs";
-
 import { hashPassword } from "../helpers/hashPassword";
 
 const userSchema = new Schema({
