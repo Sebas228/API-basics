@@ -14,7 +14,7 @@ class UserController {
    * @param _id The unique id for each user in DB
    * @return Promise with Http Response
    */
-  public static async getUser(req: Request, res: Response): Promise<void> {
+  static async getUser(req, res){
     const userFinded = await User.findOne({ _id: req.params.id });
 
     if (!userFinded) {
@@ -30,7 +30,7 @@ class UserController {
    *
    * @return Promise with Http Response
    */
-  public static async getUsers(req: Request, res: Response): Promise<void> {
+  static async getUsers(req, res) {
     const users = await User.find();
     res.status(200).json(users);
   }
@@ -46,7 +46,7 @@ class UserController {
    *
    * @return Promise with Http Response
    */
-  public static async createUser(req: Request, res: Response): Promise<void> {
+  static async createUser(req, res) {
     const newUser = new User(req.body);
 
     try {
@@ -69,7 +69,7 @@ class UserController {
    *
    * @return Promise with Http Response
    */
-  public static async updateUser(req: Request, res: Response): Promise<void> {
+  static async updateUser(req, res) {
     const { id } = req.params;
 
     const user = await User.findById(id);
@@ -105,7 +105,7 @@ class UserController {
    *
    * @return Promise with Http Response
    */
-  public static async deleteUser(req: Request, res: Response): Promise<void> {
+  static async deleteUser(req, res) {
     const { id } = req.params;
 
     try {

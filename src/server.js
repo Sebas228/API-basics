@@ -1,4 +1,4 @@
-import express, { Application } from "express";
+import express from "express";
 import compression from "compression";
 import morgan from "morgan";
 import cors from "cors";
@@ -17,7 +17,6 @@ import userRoutes from "./routes/UserRoutes";
 import Auth from "./auth/Auth";
 
 class Server {
-  public app: Application;
 
   constructor() {
     this.app = express();

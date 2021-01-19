@@ -1,10 +1,8 @@
 import { Router } from "express";
 
 import UserController from "../controllers/UserController";
-import Auth from "../auth/Auth";
 
 class UserRoutes {
-  router: Router;
 
   constructor() {
     this.router = Router();

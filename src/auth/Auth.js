@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 
@@ -7,11 +6,11 @@ import { keys } from "../config/keys";
 import User from "../models/User";
 
 class Auth {
-  public users: any[] = [];
+  users = [];
 
   constructor() {}
 
-  private static async findUser(email: string) {
+  static async findUser(email) {
     try {
       const userExists = await User.findOne({ email }).exec();
       return userExists;
@@ -20,7 +19,7 @@ class Auth {
     }
   }
 
-  public static async login(req: Request, res: Response) {
+  static async login(req, res) {
     const { email, pass } = req.body;
 
     const userFinded = await Auth.findUser(email);

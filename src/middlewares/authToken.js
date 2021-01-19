@@ -1,9 +1,8 @@
-import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 
 import { keys } from "../config/keys";
 
-function authToken(req: Request, res: Response, next: NextFunction) {
+function authToken(req, res, next) {
   if (req.path != "/api/auth") {
     if (req.headers.authorization) {
       let token = req.headers.authorization.split(" ")[1];
